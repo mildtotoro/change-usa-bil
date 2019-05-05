@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { isEmpty } from 'lodash';
-import { matcherErrorMessage } from 'jest-matcher-utils';
 
 class Change extends Component {
   constructor(props) {
@@ -33,8 +32,6 @@ class Change extends Component {
 
     if (regex.test(amount)) {
       const amounts = amount.split('.');
-
-      // console.log({ amounts })
       this.changeInDollar(amounts[0]);
       if (amounts.length === 2 && amounts[amounts.length - 1] !== "") {
         this.changeInCents(amounts[amounts.length - 1]);
@@ -49,9 +46,6 @@ class Change extends Component {
 
   changeInDollar = (dollars) => {
     let total = parseInt(dollars);
-
-    console.log("changeInDollar", { total })
-
     let hundredDollar = 0;
     let fiftyDollar = 0;
     let twentyDollar = 0;
@@ -147,13 +141,6 @@ class Change extends Component {
     }
 
     return text;
-
-    // Your change is 1 1dollar bill
-
-    // Your change is 3 quarters, 2 dimes, and 4 pennies
-
-    // Your change is 1 100 dollar bill, 1 20 dollar bill, 4 1 dollar bills, 2 quarters, 1 dime, 1 nickel, and 2 pennies.
-
   }
 
   changeInCents = (cents) => {
@@ -161,11 +148,8 @@ class Change extends Component {
     let quarter = 0; // 0.25 cents
     let dime = 0; // 0.10 cents
     let nickel = 0; // 0.05 cents
-    // penney 0.01 cents
     let cent = {};
-    console.log("---------------------------")
 
-    console.log("changeInCents", { total })
     if (total >= 25) {
       quarter = parseInt(total / 25);
       total = total - (25 * quarter);
@@ -260,12 +244,14 @@ class Change extends Component {
     return (
       <div>
         Enter change: <input type='text' value={change} placeholder="0.00" onChange={this.handleInput} />
-        {errorMessage}
 
         {(!isEmpty(dollar) || !isEmpty(cent)) && (<div>
           Your change is {this.showTextDollar()} {this.showTextCent()}.
-
         </div>)}
+
+        <div>
+          {errorMessage}
+        </div>
       </div>
     )
   }

@@ -44,7 +44,7 @@ class Change extends Component {
         change: amount,
         errorMessage: "",
         cent,
-        dollar
+        dollar,
       });
     }
   }
@@ -59,18 +59,15 @@ class Change extends Component {
     let text = "";
     for (let key in currency) {
       let name = currency[key].name;
-
       if (currency[key].total > 1) {
-
         if (key === 'penny') {
           name = "pennies";
         } else {
           name = name + "s";
         }
       }
-
-      let t = currency[key].total + " " + name;
-      messages.push(t);
+      const msg = currency[key].total + " " + name;
+      messages.push(msg);
     }
     if (messages.length === 1) {
       return messages[messages.length - 1];
@@ -80,7 +77,6 @@ class Change extends Component {
       const and = (i === messages.length - 1) ? "and " : "";
       text = text + comma + and + messages[i];
     }
-
     return text;
   }
 
@@ -93,7 +89,7 @@ class Change extends Component {
     } = this.state;
     return (
       <div>
-        Enter change: <input ref="momo" name="momo" type='text' value={change} placeholder="0.00" onChange={this.handleInput} />
+        Enter change: <input type='text' value={change} placeholder="0.00" onChange={this.handleInput} /> $
 
         {(!isEmpty(dollar) || !isEmpty(cent)) && (<div className="wrap-input">
           Your change is{this.showText()}.

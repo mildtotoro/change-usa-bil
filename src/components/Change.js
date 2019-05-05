@@ -70,7 +70,7 @@ class Change extends Component {
       messages.push(msg);
     }
     if (messages.length === 1) {
-      return messages[messages.length - 1];
+      return " "+messages[messages.length - 1];
     }
     for (let i = 0; i < messages.length; i++) {
       const comma = (i === 0) ? " " : ", ";

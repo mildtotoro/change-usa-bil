@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { isEmpty } from 'lodash';
-import {getChangeInCents, getChangeInDollar} from '../lib/change';
+import { getChangeInCents, getChangeInDollar } from '../lib/change';
 
 class Change extends Component {
   constructor(props) {
@@ -49,34 +49,19 @@ class Change extends Component {
     }
   }
 
-  showTextDollar = () => {
-    const { dollar } = this.state;
+  showText = () => {
+    const { dollar, cent } = this.state;
+    const currency = {
+      ...dollar,
+      ...cent
+    }
     let messages = [];
     let text = "";
-    console.log("dollar", dollar)
-    for (let key in dollar) {
-      let t = dollar[key].total + " " + dollar[key].name;
-      messages.push(t);
-    }
-    if (messages.length === 1) {
-      return messages[messages.length - 1];
-    }
-    for (let i = 0; i < messages.length; i++) {
-      let comma = (i === 0) ? " " : ", ";
-      text = text + comma + messages[i];
-    }
+    for (let key in currency) {
+      let name = currency[key].name;
 
-    return text;
-  }
+      if (currency[key].total > 1) {
 
-  showTextCent = () => {
-    const { cent, dollar } = this.state;
-    let text = "";
-    let messages = [];
-    console.log("cent", cent)
-    for (let key in cent) {
-      let name = cent[key].name;
-      if (cent[key].total > 1) {
         if (key === 'penny') {
           name = "pennies";
         } else {
@@ -84,21 +69,19 @@ class Change extends Component {
         }
       }
 
-      messages.push(cent[key].total + " " + name);
+      let t = currency[key].total + " " + name;
+      messages.push(t);
     }
-
-    if (messages.lenght === 1) {
-      return messages[messages.lenght - 1];
+    if (messages.length === 1) {
+      return messages[messages.length - 1];
     }
-
     for (let i = 0; i < messages.length; i++) {
-      const comma = (i > 0) ? ", " : " ";
-      text = text + comma + messages[i];
+      const comma = (i === 0) ? " " : ", ";
+      const and = (i === messages.length - 1) ? "and " : "";
+      text = text + comma + and + messages[i];
     }
 
-    const comma = (!isEmpty(dollar) && !isEmpty(cent)) ? ", " : "";
-
-    return comma + text;
+    return text;
   }
 
   render() {
@@ -110,12 +93,11 @@ class Change extends Component {
     } = this.state;
     return (
       <div>
-        Enter change: <input type='text' value={change} placeholder="0.00" onChange={this.handleInput} />
+        Enter change: <input ref="momo" name="momo" type='text' value={change} placeholder="0.00" onChange={this.handleInput} />
 
-        {(!isEmpty(dollar) || !isEmpty(cent)) && (<div>
-          Your change is {this.showTextDollar()} {this.showTextCent()}.
+        {(!isEmpty(dollar) || !isEmpty(cent)) && (<div className="wrap-input">
+          Your change is{this.showText()}.
         </div>)}
-
         <div>
           {errorMessage}
         </div>
